@@ -8,14 +8,28 @@ function Book(title, author, isbn){
 }
 
 
-
-
-
-
 // UI Constructor (Will be a set of prototype methods such as adding the book, delete the book, etc.)
     // will simply be an empty function while everything else will go within the prototype
 
 function UI () {};
+  UI.prototype.addBookToList = function(book){  //the UI must be capitalized here.
+    const list = document.getElementById('book-list');
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${book.title}</td>
+      <td>${book.author}</td>
+      <td>${book.isbn}</td>
+      <td><a href="x" class='delete'>X</td>
+    `;
+
+    list.appendChild(row); // I forgot to append it and WILL CAUSE A HEADACHE!
+  }
+// Create a way to clear out the input fields AFTER user clicks the submit button.
+UI.prototype.clearFields = function(){
+  document.getElementById('title').value = '';
+  document.getElementById('author').value = '';
+  document.getElementById('isbn').value = '';
+}
 
 /*
  Event Listeners 
@@ -31,12 +45,23 @@ function UI () {};
 
 
 document.getElementById('book-form').addEventListener('submit', 
-  function(e){
-    // GET FORM VALUES, ASSIGN EACH TO A VARIABLE
-    const title = document.getElementById('.title').value;
+  function(e){ // at one point, it wouldn't work with it and then it wouldn't work without it...
+    // GET FORM VALUES, & ASSIGN EACH TO A VARIABLE
+    const title = document.getElementById('title').value;
     const author = document.getElementById('author').value;
     const isbn = document.getElementById('isbn').value;
+    
+    // Instantiating a new book
+    const book = new Book(title, author, isbn);
 
-    console.log(title, author, isbn);
+    // Instantiate a UI object(so we can store and delete books via the UI)
+    const ui = new UI();
+    
+    // Create a way to add the book to the list created. Make a function then define it. 
+    ui.addBookToList(book); // after creating the function, I then go and define it.
+
+    // Clear the fields after user submits book entry.
+    ui.clearFields();  // Must do this and then define the function and what it will do, etc above.
+
     e.preventDefault();
   })
