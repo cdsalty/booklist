@@ -63,5 +63,5 @@ document.getElementById('book-form').addEventListener('submit',
     // Clear the fields after user submits book entry.
     ui.clearFields();  // Must do this and then define the function and what it will do, etc above.
 
-    e.preventDefault();
+    // e.preventDefault();
   })
