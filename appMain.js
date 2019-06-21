@@ -79,7 +79,12 @@ document.getElementById('book-form').addEventListener('submit',
       // After writing showAlert(), next is to go up top and create the prototype method.
     } else {
       // Bring in addBookToList and clearFields
-      ui.addBookToList(book);
+      ui.addBookToList(book); // adding Book to the list
+
+      // Show success upon book being added.
+      ui.showAlert('Congrats, your book has been added to the list', 'success');
+        // - remember, showAlert takes in a message and then a fail/success call.
+
       ui.clearFields();
     };
     e.preventDefault();
