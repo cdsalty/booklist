@@ -20,7 +20,7 @@ UI.prototype.addBookToList = function(book){
     <td>${book.title}</td>
     <td>${book.author}</td>
     <td>${book.isbn}</td>
-    <td><a href = "#" class = "delete">x<a></td>
+    <td><a href = "#" class = "delete">X<a></td>
   `
 // For it to show up, we need to append it.
   list.appendChild(row);
@@ -34,19 +34,28 @@ UI.prototype.showAlert = function(message, className) {
   // Step 2: Add classes:
   div.className = `alert ${className}`;
   // Step 3: Add Text (remember, createTextNode)
+    // appendChild: used when you want to add something.
+    //createTextNode: when you want to add text followed by what or where you want the text coming from.
   div.appendChild(document.createTextNode(message));
   // Step 4: Get Parent Element
   const container = document.querySelector('.container');
   // Step 5: Get the form  
   const form = document.querySelector('#book-form');
 
-  // Step 6: Insert Alert: by calling container, the parent element, and then call insertBefore(what we want to insert, what we want to insert before, which is the form)
+  // Step 6: Insert Alert: Need to call the container class, the parent element, then call insertBefore(what we want to insert, what we want to insert before, which is the form)
   container.insertBefore(div, form);
 
-  // Step 7: Remove alert after 'x' amount of time. 
+  // Step 7: Time-Out after 3 secs; Remove alert after 'x' amount of time. 
   setTimeout(function(){
     document.querySelector('.alert').remove();
   }, 3000);
+}
+
+// Delete Book and the data/row that is with it:
+UI.prototype.deleteBook = function(target) {
+  if(target.className === 'delete'){
+    target.parentElement.parentElement.remove(); //first parentElement is the <td> and it's parentElement is the <tr> table row, which is what we need to delete.
+  }
 }
 
 // Clear the fields after user presses submit:
@@ -57,7 +66,7 @@ UI.prototype.clearFields = function(){
 
 }
 
-// Event Listners
+// Event Listners (FOR ADDING A BOOK)
 document.getElementById('book-form').addEventListener('submit', 
   function(e){
     // Get the values from the form
@@ -89,6 +98,19 @@ document.getElementById('book-form').addEventListener('submit',
     };
     e.preventDefault();
   });
+
+// Event Listener for DELETING a book from the list
+document.getElementById('book-list').addEventListener('click', function(e){ // this will only target the delete, we need to delete the entire row,
+  // Re-Instantiate a UI
+  const ui = new UI();
+  ui.deleteBook(e.target);
+
+  // Show Alert when sucessfully deleted
+  ui.showAlert('Book has been removed from the list', 'success')
+  e.preventDefault();
+});
+
+
 /*
 
    ui.addBookToList(book); // Placed inside our validation
