@@ -60,4 +60,44 @@ class UI {
   }
 }
 
-// Need to carry over Event Listeners
+// Event Listners (FOR ADDING A BOOK)
+document.getElementById('book-form').addEventListener('submit', 
+  function(e){
+    // Get the values from the form
+    const title  = document.getElementById('title').value;
+    const author = document.getElementById('author').value;
+    const isbn = document.getElementById('isbn').value;
+
+    // Istantiate book
+    const book = new Book(title, author, isbn);
+
+    // Instantiate UI
+    const ui = new UI();   
+    
+    // VALIDATE VALIDATE
+    if(title === ''  || author === '' || isbn === ''){
+      // alert("BLANK ITEMS LEFT!!!")
+      // ERROR ALERT: show alert takes in 2 things, the message and then the class, which in this case will be error
+      ui.showAlert('All fields are required. Please fill out completely and then submit', 'error'); // error has a css class
+      // After writing showAlert(), next is to go up top and create the prototype method.
+    } else {
+      // Bring in addBookToList and clearFields
+      ui.addBookToList(book); // adding Book to the list
+
+      // Show success upon book being added.
+      ui.showAlert('Congrats, your book has been added to the list', 'success');
+        // - remember, showAlert takes in a message and then a fail/success call.
+      ui.clearFields();
+    };
+    e.preventDefault();
+  });
+
+// Event Listener for DELETING a book from the list
+document.getElementById('book-list').addEventListener('click', function(e){ // this will only target the delete, we need to delete the entire row,
+  // Re-Instantiate a UI
+  const ui = new UI();
+  ui.deleteBook(e.target);
+  // Show Alert when sucessfully deleted
+  ui.showAlert('Book has been removed from the list', 'success')
+  e.preventDefault();
+});
